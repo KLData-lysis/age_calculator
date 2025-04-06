@@ -1,0 +1,30 @@
+from datetime import datetime
+
+def calculate_age(birthdate_str):
+    # Convert birthdate string to a datetime object
+    birthdate = datetime.strptime(birthdate_str, "%Y-%m-%d")
+    today = datetime.today()
+    
+    # Calculate initial age
+    age = today.year - birthdate.year
+
+    # Check how many months and days past the birthday this year
+    birthday_this_year = birthdate.replace(year=today.year)
+    
+    # If birthday this year is in the future, subtract a year to calculate distance
+    if birthday_this_year > today:
+        previous_birthday = birthday_this_year.replace(year=today.year - 1)
+        months_diff = (today.year - previous_birthday.year) * 12 + today.month - previous_birthday.month
+    else:
+        months_diff = (today.year - birthday_this_year.year) * 12 + today.month - birthday_this_year.month
+
+    # Round age based on proximity to next birthday
+    if months_diff >= 6:
+        age += 1
+
+    return age
+
+# Example usage
+birthdate_input = input("Enter your birthdate (YYYY-MM-DD): ")
+age = calculate_age(birthdate_input)
+print(f"You are {age} years old.")
